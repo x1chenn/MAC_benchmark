@@ -1,0 +1,64 @@
+<figure class="fig" id="fig-layers">
+<div class="figscroll">
+<svg viewBox="0 0 1000 508" role="img" aria-label="六层架构：世界内核和领域包属于 Task 模块，接口层和运行层属于 Agent 模块，评估层属于 Evaluation 模块，最上面是发布层。右侧列出每层读入和写出的契约文件。">
+  <!-- module brackets -->
+  <text x="160" y="54" text-anchor="end" class="t-sub">发布</text>
+
+  <path class="br s-eval" d="M180 94 h-9 v66 h9"/>
+  <text x="160" y="124" text-anchor="end" class="t-title">Evaluation 模块</text>
+  <text x="160" y="143" text-anchor="end" class="t-sub">四层指标</text>
+
+  <path class="br s-agent" d="M180 172 h-9 v144 h9"/>
+  <text x="160" y="240" text-anchor="end" class="t-title">Agent 模块</text>
+  <text x="160" y="259" text-anchor="end" class="t-sub">工具面与席位</text>
+
+  <path class="br s-task" d="M180 328 h-9 v144 h9"/>
+  <text x="160" y="396" text-anchor="end" class="t-title">Task 模块</text>
+  <text x="160" y="415" text-anchor="end" class="t-sub">世界与场景</text>
+
+  <!-- bands -->
+  <rect class="b k-file" x="190" y="16" width="450" height="66" rx="4"/>
+  <text x="206" y="43" class="t-title"><tspan class="t-num">6</tspan>  发布层</text>
+  <text x="206" y="65" class="t-sub">数据集划分 · 版本 · 注册表 · 榜单</text>
+
+  <rect class="b k-eval" x="190" y="94" width="450" height="66" rx="4"/>
+  <text x="206" y="121" class="t-title"><tspan class="t-num">5</tspan>  评估层</text>
+  <text x="206" y="143" class="t-sub">验证器 · 分析器</text>
+
+  <rect class="b k-agent" x="190" y="172" width="450" height="66" rx="4"/>
+  <text x="206" y="199" class="t-title"><tspan class="t-num">4</tspan>  运行层</text>
+  <text x="206" y="221" class="t-sub">席位 · 控制器 · harness 适配 · 编排 · 轨迹</text>
+
+  <rect class="b k-agent" x="190" y="250" width="450" height="66" rx="4"/>
+  <text x="206" y="277" class="t-title"><tspan class="t-num">3</tspan>  接口层</text>
+  <text x="206" y="299" class="t-sub">REST + OpenAPI · MCP · CLI · 消息板</text>
+
+  <rect class="b k-task" x="190" y="328" width="450" height="66" rx="4"/>
+  <text x="206" y="355" class="t-title"><tspan class="t-num">2</tspan>  领域包 <tspan class="t-mono t-sub" dx="8">ticketing · shopping · insurance</tspan></text>
+  <text x="206" y="377" class="t-sub">数据模型 · 规则 · 事件 · 生成器 · 求解器 · 条款文档</text>
+
+  <rect class="b k-task" x="190" y="406" width="450" height="66" rx="4"/>
+  <text x="206" y="433" class="t-title"><tspan class="t-num">1</tspan>  世界内核</text>
+  <text x="206" y="455" class="t-sub">状态存储 · 逻辑时钟 · 事件队列 · 身份与权限 · 事件日志</text>
+
+  <!-- contracts read / written by each layer -->
+  <text x="660" y="43"><tspan class="t-sub">读</tspan>  轨迹 · <tspan class="t-mono">reward.json</tspan></text>
+
+  <text x="660" y="121"><tspan class="t-sub">读</tspan>  事件日志 · 终态 · <tspan class="t-mono">truth.json</tspan></text>
+  <text x="660" y="143"><tspan class="t-sub">写</tspan>  <tspan class="t-mono">reward.json</tspan></text>
+
+  <text x="660" y="199"><tspan class="t-sub">读</tspan>  工具清单 · 消息 · 角色卡</text>
+  <text x="660" y="221"><tspan class="t-sub">写</tspan>  每席位一份轨迹</text>
+
+  <text x="660" y="277"><tspan class="t-sub">读</tspan>  世界 API 的 OpenAPI 规格</text>
+  <text x="660" y="299"><tspan class="t-sub">写</tspan>  工具清单 · 消息</text>
+
+  <text x="660" y="355"><tspan class="t-sub">写</tspan>  世界 API · 角色卡 · <tspan class="t-mono">truth.json</tspan></text>
+
+  <text x="660" y="433"><tspan class="t-sub">写</tspan>  事件日志 · 终态快照</text>
+
+  <text x="190" y="497" class="t-sub">每层只依赖下面的层。评估层只读文件，不调用 agent，也不调用运行中的世界。</text>
+</svg>
+</div>
+<figcaption>图 1　六层和三个模块的对应。层与层之间只通过右侧列出的契约文件通信，所以换场景只动领域包，换模型只动运行层，换指标只动评估层。</figcaption>
+</figure>

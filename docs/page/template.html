@@ -1,0 +1,254 @@
+<title>日常场景协作基准设计稿</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Serif+SC:wght@600;700&display=swap">
+<style>
+/* Layout: a sticky contents rail on the left, one reading column on the right.
+   Prose keeps a 42em measure; tables, figures and code use the full column. */
+:root {
+  --bg: #f4f6f7;
+  --surface: #ffffff;
+  --ink: #17242c;
+  --muted: #586972;
+  --line: #d3dbe0;
+  --line-strong: #a9b6be;
+  --tint: #e9eef1;
+  --accent: #0a6470;
+  --task: #0a6c74;
+  --task-tint: #dcf0f0;
+  --agent: #4350b0;
+  --agent-tint: #e7e9f8;
+  --eval: #96580a;
+  --eval-tint: #f7ebd7;
+  --serif: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  --sans: "IBM Plex Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --measure: 42em;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f161a; --surface: #151f25; --ink: #e3eaed; --muted: #98a8b1;
+    --line: #2a3840; --line-strong: #4b5d67; --tint: #1b272e; --accent: #62c9c9;
+    --task: #5fc7c5; --task-tint: #113236;
+    --agent: #a5aeff; --agent-tint: #22274d;
+    --eval: #eeb65e; --eval-tint: #3a2d14;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f161a; --surface: #151f25; --ink: #e3eaed; --muted: #98a8b1;
+  --line: #2a3840; --line-strong: #4b5d67; --tint: #1b272e; --accent: #62c9c9;
+  --task: #5fc7c5; --task-tint: #113236;
+  --agent: #a5aeff; --agent-tint: #22274d;
+  --eval: #eeb65e; --eval-tint: #3a2d14;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15.5px;
+  line-height: 1.75;
+  -webkit-text-size-adjust: 100%;
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 36px 96px;
+}
+
+a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* masthead */
+.mast { display: grid; gap: 14px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+.eyebrow { margin: 0; font-size: 13px; letter-spacing: .04em; color: var(--muted); }
+.mast h1 {
+  margin: 0; font-family: var(--serif); font-weight: 700;
+  font-size: clamp(27px, 4.2vw, 40px); line-height: 1.25; text-wrap: balance;
+}
+.lede { margin: 0; max-width: var(--measure); font-size: 16.5px; color: var(--ink); }
+.jump { display: flex; flex-wrap: wrap; gap: 8px 10px; margin: 6px 0 0; padding: 0; list-style: none; }
+.jump a {
+  display: block; padding: 5px 12px; font-size: 13.5px; text-decoration: none;
+  color: var(--ink); background: var(--surface); border: 1px solid var(--line-strong);
+}
+.jump a:hover { border-color: var(--accent); color: var(--accent); }
+
+/* two-column layout */
+.layout { display: grid; grid-template-columns: 216px minmax(0, 1fr); gap: 56px; align-items: start; padding-top: 32px; }
+.toc {
+  position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px);
+  max-height: calc(100vh - 40px); overflow: auto;
+  font-size: 13.5px; line-height: 1.5; display: grid; gap: 18px;
+}
+.toc h2 { margin: 0 0 4px; font-size: 13px; font-weight: 600; letter-spacing: .04em; }
+.toc h2 a { color: var(--ink); text-decoration: none; }
+.toc ol { margin: 0; padding: 0; list-style: none; }
+.toc li a { display: block; padding: 3px 0 3px 10px; color: var(--muted); text-decoration: none; border-left: 1px solid var(--line); }
+.toc li a:hover { color: var(--ink); }
+.toc li a.on { color: var(--ink); font-weight: 600; border-left-color: var(--accent); }
+.toc .n { display: inline-block; min-width: 1.6em; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+main { min-width: 0; display: grid; gap: 72px; }
+
+/* parts and headings */
+.part { min-width: 0; }
+.part > * + * { margin-top: 1.05em; }
+.part-title {
+  margin: 0; font-family: var(--serif); font-weight: 700; font-size: 28px; line-height: 1.3;
+  display: flex; align-items: baseline; gap: 14px; scroll-margin-top: 16px;
+}
+.part-no { font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: .08em; color: var(--muted); }
+.part-intro { color: var(--muted); max-width: var(--measure); margin-top: .5em; }
+.part h3 {
+  margin: 2.6em 0 0; padding-top: 1.1em; border-top: 1px solid var(--line);
+  font-family: var(--serif); font-weight: 600; font-size: 21px; line-height: 1.4;
+  text-wrap: balance; scroll-margin-top: 12px;
+}
+.part h4 { margin: 2em 0 0; font-size: 16.5px; font-weight: 600; line-height: 1.5; scroll-margin-top: 12px; }
+.hn { font-family: var(--mono); font-weight: 500; font-size: .82em; color: var(--muted); margin-right: .7em; }
+.part p, .part ul, .part ol, .part blockquote { max-width: var(--measure); margin-bottom: 0; }
+.part ul, .part ol { padding-left: 1.4em; }
+.part li + li { margin-top: .35em; }
+.part strong { font-weight: 600; }
+
+code { font-family: var(--mono); font-size: .86em; background: var(--tint); padding: .08em .34em; border-radius: 3px; overflow-wrap: anywhere; }
+pre {
+  margin-bottom: 0; overflow-x: auto; background: var(--surface); border: 1px solid var(--line);
+  padding: 14px 16px; font-family: var(--mono); font-size: 13px; line-height: 1.6;
+}
+pre code { background: none; padding: 0; font-size: inherit; overflow-wrap: normal; }
+
+/* a role card is a slip of paper handed to one seat */
+.part blockquote {
+  margin-left: 0; margin-right: 0; padding: 12px 16px;
+  background: var(--surface); border: 1px dashed var(--line-strong);
+}
+.part blockquote p { margin: 0; }
+
+/* tables */
+.tw { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); }
+.tw table { border-collapse: collapse; width: 100%; font-size: 14px; line-height: 1.6; font-variant-numeric: tabular-nums; }
+.tw th, .tw td { padding: 9px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+.tw th { font-weight: 600; background: var(--tint); white-space: nowrap; }
+.tw tr:last-child td { border-bottom: 0; }
+.tw table.c3 { min-width: 540px; }
+.tw table.c4 { min-width: 700px; }
+.tw table.c5 { min-width: 860px; }
+.tw table.c6 { min-width: 980px; }
+
+/* per-scenario section links */
+.subnav { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13.5px; }
+.subnav a { text-decoration: none; }
+.subnav a:hover { text-decoration: underline; }
+
+/* figures */
+.fig { margin: 1.5em 0 0; }
+.figscroll { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); padding: 16px; }
+.fig svg { display: block; width: 100%; min-width: 900px; height: auto; color: var(--ink); font-family: var(--sans); }
+.fig figcaption { margin-top: 9px; font-size: 13.5px; line-height: 1.65; color: var(--muted); max-width: var(--measure); }
+.fig text { fill: currentColor; font-size: 13.5px; }
+.fig .t-title { font-size: 14.5px; font-weight: 600; }
+.fig .t-mono { font-family: var(--mono); font-size: 12.5px; }
+.fig .t-sub { font-size: 12px; fill: var(--muted); font-weight: 400; }
+.fig .t-sm { font-size: 11.5px; }
+.fig .t-num { font-family: var(--mono); font-weight: 500; fill: var(--muted); }
+.fig .b { stroke-width: 1.4; }
+.fig .k-task { fill: var(--task-tint); stroke: var(--task); }
+.fig .k-agent { fill: var(--agent-tint); stroke: var(--agent); }
+.fig .k-eval { fill: var(--eval-tint); stroke: var(--eval); }
+.fig .k-file { fill: var(--bg); stroke: var(--line-strong); }
+.fig .k-focus { stroke-width: 3; }
+.fig .k-frame { fill: none; stroke: var(--line-strong); stroke-width: 1.2; stroke-dasharray: 6 5; }
+.fig .ln { stroke: currentColor; stroke-width: 1.3; fill: none; }
+.fig .ln-dash { stroke-dasharray: 5 4; }
+.fig .ln-soft { stroke: var(--line-strong); }
+.fig .br { stroke-width: 2.2; fill: none; }
+.fig .s-task { stroke: var(--task); }
+.fig .s-agent { stroke: var(--agent); }
+.fig .s-eval { stroke: var(--eval); }
+.fig .lblbg { fill: var(--surface); }
+
+.foot { margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); max-width: var(--measure); }
+
+@media (max-width: 920px) {
+  .layout { grid-template-columns: minmax(0, 1fr); gap: 28px; padding-top: 24px; }
+  .toc { position: static; max-height: none; overflow: visible; background: var(--surface); border: 1px solid var(--line); padding: 14px 16px; }
+  .toc ol { columns: 2; column-gap: 20px; }
+  .toc li { break-inside: avoid; }
+  main { gap: 56px; }
+  .part-title { font-size: 24px; }
+  .part h3 { font-size: 19px; }
+}
+</style>
+
+<div class="page">
+  <header class="mast">
+    <p class="eyebrow">设计稿 v0 · 2026-11-23 · 尚无代码 · 项目名待定</p>
+    <h1>日常场景多智能体协作基准</h1>
+    <p class="lede">订票、购物、车险理赔三个场景。任务按 Harbor 的目录格式打包，真值由程序给出，同一份任务既能当训练环境，也能当团队评测。</p>
+    <ul class="jump">
+      <li><a href="#d-3-1">架构图</a></li>
+      <li><a href="#d-3-4">一次试验的数据流</a></li>
+      <li><a href="#s-0">三个场景总览</a></li>
+      <li><a href="#d-7">验收标准</a></li>
+      <li><a href="#d-10">待定事项</a></li>
+    </ul>
+  </header>
+
+  <div class="layout">
+    <nav class="toc" aria-label="目录">
+<!--TOC-->
+    </nav>
+
+    <main>
+      <section class="part" id="design">
+        <h2 class="part-title"><span class="part-no">第一部分</span>顶层设计</h2>
+        <p class="part-intro">分层、契约、三个模块各自的职责、验收标准、数据划分和实现顺序。</p>
+<!--PART_DESIGN-->
+      </section>
+
+      <section class="part" id="scenarios">
+        <h2 class="part-title"><span class="part-no">第二部分</span>三个场景</h2>
+        <p class="part-intro">每个场景的已有工作、世界模型、规则出处、接口、事件、任务族和真值算法。标“未核实”的条目没有在一手来源读到原文，用之前要再查。</p>
+<!--PART_SCENARIOS-->
+      </section>
+
+      <section class="part" id="tools">
+        <h2 class="part-title"><span class="part-no">第三部分</span>工具调研附录</h2>
+        <p class="part-intro">对 7 个 agent harness 和 6 类服务型基准的工具核对。工具名取自官方文档或仓库源码。</p>
+<!--PART_TOOLS-->
+      </section>
+    </main>
+  </div>
+
+  <p class="foot">本页由三份 Markdown 源文件生成：顶层设计、三个场景、工具调研附录。内容截至 2026-11-23。</p>
+</div>
+
+<script>
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc li a[href^="#"]'));
+  if (!('IntersectionObserver' in window) || !links.length) return;
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+  var current = null;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      if (current) current.classList.remove('on');
+      current = byId[e.target.id];
+      if (current) current.classList.add('on');
+    });
+  }, { rootMargin: '0px 0px -70% 0px' });
+  Object.keys(byId).forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) io.observe(el);
+  });
+})();
+</script>

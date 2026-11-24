@@ -1,0 +1,67 @@
+<figure class="fig" id="fig-modes">
+<div class="figscroll">
+<svg viewBox="0 0 960 322" role="img" aria-label="两种运行模式的对比。焦点模式：一个被测 agent 在 Harbor 的 main 容器里，其余席位的控制器在一个 sidecar 里，两者都连到 world 和 board。团队模式：每个 agent 一个沙箱，全部被测，都通过各自的令牌连到一个 hub。">
+  <defs>
+    <marker id="ah-md" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+  </defs>
+
+  <!-- focal mode -->
+  <text x="20" y="28" class="t-title">焦点模式 · 原生 Harbor</text>
+
+  <rect class="b k-agent k-focus" x="20" y="46" width="230" height="84" rx="4"/>
+  <text x="36" y="72" class="t-title">main 容器 · 被测席位</text>
+  <text x="36" y="94" class="t-sub">任一 Harbor 预集成 agent</text>
+  <text x="36" y="113" class="t-sub">claude-code、codex 等</text>
+
+  <rect class="b k-file" x="280" y="46" width="180" height="84" rx="4"/>
+  <text x="296" y="72" class="t-title">counterparts</text>
+  <text x="296" y="94" class="t-sub">sidecar：其余席位的控制器</text>
+  <text x="296" y="113" class="t-sub">script 或 panel</text>
+
+  <line class="ln" x1="135" y1="130" x2="135" y2="206" marker-end="url(#ah-md)"/>
+  <text x="145" y="164" class="t-sub">MCP</text>
+  <text x="145" y="182" class="t-sub">只暴露焦点角色的端点</text>
+  <line class="ln" x1="370" y1="130" x2="370" y2="206" marker-end="url(#ah-md)"/>
+  <text x="380" y="172" class="t-sub">内部接口</text>
+
+  <rect class="b k-task" x="20" y="206" width="440" height="64" rx="4"/>
+  <text x="36" y="232" class="t-title">world + board</text>
+  <text x="36" y="253" class="t-sub">领域服务 · 消息板 · 事件日志</text>
+
+  <text x="20" y="302">被测 1 个席位。对手可控，结果可复现。</text>
+
+  <line class="ln ln-dash ln-soft" x1="480" y1="14" x2="480" y2="312"/>
+
+  <!-- team mode -->
+  <text x="500" y="28" class="t-title">团队模式 · Bespoke 团队环境</text>
+
+  <rect class="b k-agent k-focus" x="500" y="46" width="130" height="84" rx="4"/>
+  <text x="516" y="72" class="t-title">agent-1</text>
+  <text x="516" y="94" class="t-sub">CLI + 角色卡</text>
+  <text x="516" y="113" class="t-sub">被测</text>
+
+  <rect class="b k-agent k-focus" x="655" y="46" width="130" height="84" rx="4"/>
+  <text x="671" y="72" class="t-title">agent-2</text>
+  <text x="671" y="94" class="t-sub">CLI + 角色卡</text>
+  <text x="671" y="113" class="t-sub">被测</text>
+
+  <rect class="b k-agent k-focus" x="810" y="46" width="130" height="84" rx="4"/>
+  <text x="826" y="72" class="t-title">agent-3</text>
+  <text x="826" y="94" class="t-sub">CLI + 角色卡</text>
+  <text x="826" y="113" class="t-sub">被测</text>
+
+  <line class="ln" x1="565" y1="130" x2="565" y2="206" marker-end="url(#ah-md)"/>
+  <line class="ln" x1="720" y1="130" x2="720" y2="206" marker-end="url(#ah-md)"/>
+  <line class="ln" x1="875" y1="130" x2="875" y2="206" marker-end="url(#ah-md)"/>
+  <text x="730" y="164" class="t-sub">各自的 Bearer 令牌</text>
+  <text x="730" y="182" class="t-sub">经 hub 的单一入口</text>
+
+  <rect class="b k-task" x="500" y="206" width="440" height="64" rx="4"/>
+  <text x="516" y="232" class="t-title">hub</text>
+  <text x="516" y="253" class="t-sub">world · board · 模型代理与预算上限</text>
+
+  <text x="500" y="302">被测全部席位。团队 harness 目前只接了三种 CLI。</text>
+</svg>
+</div>
+<figcaption>图 3　同一份任务的两种跑法。粗边框是被测的席位。区别只在谁占着席位，world、board、验证器和任务文件都不变。</figcaption>
+</figure>

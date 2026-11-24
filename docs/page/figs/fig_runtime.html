@@ -1,0 +1,113 @@
+<figure class="fig" id="fig-runtime">
+<div class="figscroll">
+<svg viewBox="0 0 1000 622" role="img" aria-label="一次试验的数据流：任务目录把角色卡交给各席位、把初始世界交给 world 服务；席位通过 MCP 或 REST 向 world 提交领域动作，通过 board 互发消息；world 和 board 写出事件日志与终态；独立沙箱里的验证器读取这些文件和只存在于验证器镜像里的 truth.json，输出 reward.json。">
+  <defs>
+    <marker id="ah-rt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+  </defs>
+
+  <!-- left column: where a task comes from -->
+  <rect class="b k-task" x="16" y="16" width="180" height="42" rx="4"/>
+  <text x="106" y="42" text-anchor="middle" class="t-title">领域包：生成器 · 求解器</text>
+  <line class="ln" x1="106" y1="58" x2="106" y2="84" marker-end="url(#ah-rt)"/>
+  <text x="116" y="76" class="t-sub">导出</text>
+
+  <rect class="b k-task" x="16" y="84" width="180" height="232" rx="4"/>
+  <text x="30" y="110" class="t-title">任务目录</text>
+  <text x="30" y="128" class="t-sub">Harbor 格式</text>
+  <text x="30" y="156" class="t-mono">task.toml</text>
+  <text x="30" y="179" class="t-mono">instruction.md</text>
+  <text x="30" y="202" class="t-mono">roles/&lt;role&gt;/card.md</text>
+  <text x="30" y="225" class="t-mono">world.json</text>
+  <text x="30" y="248" class="t-mono">scenario.json</text>
+  <text x="30" y="271" class="t-mono">solution/solve.sh</text>
+  <text x="30" y="294" class="t-mono">tests/truth.json</text>
+
+  <!-- the trial -->
+  <rect class="k-frame" x="262" y="30" width="460" height="432" rx="8"/>
+  <text x="276" y="52" class="t-sub">一次 trial：容器网络，无公网</text>
+
+  <rect class="b k-agent k-focus" x="282" y="66" width="126" height="70" rx="4"/>
+  <text x="345" y="96" text-anchor="middle" class="t-title">席位 A · 被测</text>
+  <text x="345" y="117" text-anchor="middle" class="t-sub">模型 + harness</text>
+
+  <rect class="b k-agent" x="429" y="66" width="126" height="70" rx="4"/>
+  <text x="492" y="96" text-anchor="middle" class="t-title">席位 B</text>
+  <text x="492" y="117" text-anchor="middle" class="t-sub">脚本或冻结对手</text>
+
+  <rect class="b k-agent" x="576" y="66" width="126" height="70" rx="4"/>
+  <text x="639" y="96" text-anchor="middle" class="t-title">席位 C</text>
+  <text x="639" y="117" text-anchor="middle" class="t-sub">脚本或冻结对手</text>
+
+  <!-- every seat reaches both services -->
+  <path class="ln" d="M345 136 V164 M492 136 V164 M639 136 V164 M345 164 H639"/>
+  <line class="ln" x1="382" y1="164" x2="382" y2="262" marker-end="url(#ah-rt)"/>
+  <text x="392" y="206">领域动作</text>
+  <text x="392" y="225" class="t-sub">MCP 或 REST · 按角色鉴权</text>
+  <line class="ln" x1="602" y1="164" x2="602" y2="262" marker-start="url(#ah-rt)" marker-end="url(#ah-rt)"/>
+  <text x="612" y="206" class="t-mono">send · inbox</text>
+  <text x="612" y="225" class="t-sub">消息与通知</text>
+
+  <rect class="b k-task" x="282" y="262" width="200" height="150" rx="4"/>
+  <text x="298" y="290" class="t-title">world · 领域服务</text>
+  <text x="298" y="314" class="t-sub">规则引擎 · 状态库</text>
+  <text x="298" y="334" class="t-sub">逻辑时钟 · 外生事件</text>
+  <text x="298" y="354" class="t-sub">REST + MCP 端点</text>
+  <text x="298" y="374" class="t-sub">报价、订单、授权在此落库</text>
+  <text x="298" y="394" class="t-sub">无 LLM</text>
+
+  <rect class="b k-agent" x="502" y="262" width="200" height="150" rx="4"/>
+  <text x="518" y="290" class="t-title">board · 消息板</text>
+  <text x="518" y="314" class="t-mono t-sub">send · inbox · history</text>
+  <text x="518" y="334" class="t-sub">按席位鉴权 · 限流</text>
+  <text x="518" y="354" class="t-sub">口头承诺不算数</text>
+
+  <!-- arrows from the task directory -->
+  <line class="ln" x1="196" y1="101" x2="282" y2="101" marker-end="url(#ah-rt)"/>
+  <text x="229" y="94" text-anchor="middle" class="t-sub">角色卡</text>
+  <line class="ln" x1="196" y1="296" x2="282" y2="296" marker-end="url(#ah-rt)"/>
+  <text x="229" y="289" text-anchor="middle" class="t-sub">初始世界</text>
+
+  <!-- what a trial leaves behind -->
+  <path class="ln" d="M382 412 V436 M602 412 V436"/>
+  <line class="ln" x1="382" y1="436" x2="764" y2="436" marker-end="url(#ah-rt)"/>
+  <text x="492" y="454" text-anchor="middle" class="t-sub">只追加的事件日志 · 终态快照</text>
+
+  <line class="ln" x1="702" y1="101" x2="764" y2="101" marker-end="url(#ah-rt)"/>
+  <text x="733" y="94" text-anchor="middle" class="t-sub">轨迹</text>
+
+  <rect class="b k-file" x="764" y="76" width="220" height="52" rx="4"/>
+  <text x="780" y="98" class="t-mono">trajectory.json × N</text>
+  <text x="780" y="117" class="t-sub">每席位一份 · ATIF 格式</text>
+
+  <rect class="b k-file" x="764" y="408" width="220" height="56" rx="4"/>
+  <text x="780" y="431" class="t-mono">events.jsonl</text>
+  <text x="780" y="451" class="t-mono">final_state.json</text>
+
+  <line class="ln" x1="874" y1="464" x2="874" y2="496" marker-end="url(#ah-rt)"/>
+  <text x="884" y="485" class="t-sub">只读</text>
+
+  <rect class="b k-eval" x="764" y="496" width="220" height="58" rx="4"/>
+  <text x="780" y="520" class="t-title">verifier · 独立沙箱</text>
+  <text x="780" y="540" class="t-sub">只读文件 · 程序判分</text>
+
+  <line class="ln" x1="874" y1="554" x2="874" y2="578" marker-end="url(#ah-rt)"/>
+  <rect class="b k-eval" x="764" y="578" width="220" height="32" rx="4"/>
+  <text x="874" y="599" text-anchor="middle" class="t-mono">reward.json</text>
+
+  <!-- ground truth never enters the trial -->
+  <path class="ln ln-dash" d="M106 316 V525 H764" marker-end="url(#ah-rt)"/>
+  <text x="130" y="516"><tspan class="t-mono">tests/truth.json</tspan><tspan class="t-sub" dx="6">求解器给出的真值，只进验证器镜像</tspan></text>
+
+  <!-- legend -->
+  <rect class="b k-task" x="16" y="582" width="14" height="14" rx="2"/>
+  <text x="38" y="594" class="t-sub">Task 模块</text>
+  <rect class="b k-agent" x="126" y="582" width="14" height="14" rx="2"/>
+  <text x="148" y="594" class="t-sub">Agent 模块</text>
+  <rect class="b k-eval" x="246" y="582" width="14" height="14" rx="2"/>
+  <text x="268" y="594" class="t-sub">Evaluation 模块</text>
+  <rect class="b k-file" x="396" y="582" width="14" height="14" rx="2"/>
+  <text x="418" y="594" class="t-sub">产出文件</text>
+</svg>
+</div>
+<figcaption>图 2　一次试验里数据怎么流。数据库在 world 容器里，agent 的 shell 碰不到；真值只走下方的虚线进入验证器。右侧四个文件加上场景实例，就是一个训练单元。</figcaption>
+</figure>
